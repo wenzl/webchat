@@ -53,7 +53,7 @@ func (h *hub) run() {
 							delete(h.connections, c)
 						}
 					}
-				} else {
+				} else if message["chatType"] == "member" {
 					if c.member == message["member"] {
 						select {
 						case c.send <- m:

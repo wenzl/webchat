@@ -5,6 +5,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -38,6 +39,7 @@ type connection struct {
 	chatType string
 	chatroom string
 	member   string
+	joinTime string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -104,8 +106,12 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	member := r.FormValue("member")
 	chatroom := r.FormValue("chatroom")
 
-	c := &connection{send: make(chan []byte, 256), ws: ws, chatType: chatType, chatroom: chatroom, member: member}
+	joinTime := fmt.Sprintf("%d", time.Now().Unix())
+
+	c := &connection{send: make(chan []byte, 256), ws: ws, chatType: chatType, chatroom: chatroom, member: member, joinTime: joinTime}
+
 	h.register <- c
+
 	go c.writePump()
 	c.readPump()
 }
