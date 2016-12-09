@@ -36,7 +36,7 @@ var upgrader = websocket.Upgrader{
 type connection struct {
 	ws       *websocket.Conn
 	send     chan []byte
-	chatType string
+	chattype string
 	chatroom string
 	member   string
 	joinTime string
@@ -102,13 +102,13 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	chatType := r.FormValue("chatType")
+	chattype := r.FormValue("chattype")
 	member := r.FormValue("member")
 	chatroom := r.FormValue("chatroom")
 
 	joinTime := fmt.Sprintf("%d", time.Now().Unix())
 
-	c := &connection{send: make(chan []byte, 256), ws: ws, chatType: chatType, chatroom: chatroom, member: member, joinTime: joinTime}
+	c := &connection{send: make(chan []byte, 256), ws: ws, chattype: chattype, chatroom: chatroom, member: member, joinTime: joinTime}
 
 	h.register <- c
 
